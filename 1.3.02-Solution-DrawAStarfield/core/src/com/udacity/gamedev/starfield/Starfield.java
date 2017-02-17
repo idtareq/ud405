@@ -3,6 +3,7 @@ package com.udacity.gamedev.starfield;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
@@ -35,9 +36,10 @@ import java.util.Random;
 
 public class Starfield extends ApplicationAdapter {
 
-    private static final float STAR_DENSITY = 0.1f;
+    private static final float STAR_DENSITY = 0.02f;
     ShapeRenderer shapeRenderer;
     Array<Vector2> stars;
+    Array<Vector2> milkyway;
 
     @Override
     public void create () {
@@ -61,6 +63,22 @@ public class Starfield extends ApplicationAdapter {
             int y = random.nextInt(screenHeight);
             stars.add(new Vector2(x, y));
         }
+        // Draw milky way
+        milkyway = new Array<Vector2>();
+        float angle, x, y, centerX, centerY;
+        centerX = screenWidth/2;
+        centerY = screenHeight/2;
+        for (int i=0; i< 520; i++) {
+            angle = 0.1f * i;
+            x=centerX+(3*angle)*(float)Math.cos(angle);
+            y=centerY+(angle)*(float)Math.sin(angle);
+            milkyway.add(new Vector2(x+(float)Math.random()*3, y+(float)Math.random()*3));
+            milkyway.add(new Vector2(x+(float)Math.random()*5, y+(float)Math.random()*5));
+            milkyway.add(new Vector2(x+(float)Math.random()*10, y+(float)Math.random()*10));
+            milkyway.add(new Vector2(x+(float)Math.random()*10, y+(float)Math.random()*10));
+            milkyway.add(new Vector2(x+(float)Math.random()*10, y+(float)Math.random()*10));
+        }
+
     }
 
     @Override
@@ -77,13 +95,18 @@ public class Starfield extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // TODO: Begin a shapeRenderer batch using ShapeType.Point
         shapeRenderer.begin(ShapeType.Point);
-        // TODO: Loop through the star positions and use shapeRenderer to draw points
         for (Vector2 star : stars){
+            shapeRenderer.setColor((float)Math.random()/2,(float)Math.random()/2,(float)Math.random()/2,1);
             shapeRenderer.point(star.x, star.y, 0);
         }
-        // TODO: End the shapeRenderer batch
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeType.Point);
+        for (Vector2 star : milkyway){
+            shapeRenderer.setColor((float)Math.random(),(float)Math.random(),(float)Math.random(),1);
+            shapeRenderer.point(star.x, star.y, 0);
+        }
         shapeRenderer.end();
     }
 
