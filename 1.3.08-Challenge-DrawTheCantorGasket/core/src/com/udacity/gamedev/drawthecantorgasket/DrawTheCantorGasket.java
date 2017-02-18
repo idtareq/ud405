@@ -34,11 +34,13 @@ public class DrawTheCantorGasket extends ApplicationAdapter {
         Rectangle bounds = findLargestSquare();
 
         // TODO: Begin a filled shapeRenderer batch
-
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         // TODO: Draw a white square matching the bounds
-
+        shapeRenderer.setColor(1,1,1,1);
+        shapeRenderer.rect(bounds.x,bounds.y,bounds.width,bounds.height);
         // TODO: Set the working color to black, and call punchCantorGasket with the bounds
-
+        shapeRenderer.setColor(0,0,0,0);
+        punchCantorGasket(bounds.x,bounds.y,bounds.width,5);
         // TODO: End the batch
         shapeRenderer.end();
     }
@@ -52,11 +54,22 @@ public class DrawTheCantorGasket extends ApplicationAdapter {
     private void punchCantorGasket(float x, float y, float size, int recursions){
         // Note that size means the height and width of the square
         // TODO: Base case, if recursions = 0, return
-
+        if(recursions==0)return;
         // TODO: Draw a black square in the middle square
-
+        float newSize = size/3;
+        float offset = (size/2)-(newSize/2);
+        shapeRenderer.rect(x+offset,y+offset,newSize,newSize);
         // TODO: Call punchCantorGasket on all 8 other squares
-
+        //punchCantorGasket(x,y,newSize,--recursions);
+        recursions--;
+        punchCantorGasket(x,y,newSize,recursions);
+        punchCantorGasket(x+newSize,y,newSize,recursions);
+        punchCantorGasket(x+newSize*2,y,newSize,recursions);
+        punchCantorGasket(x,y+newSize,newSize,recursions);
+        punchCantorGasket(x+newSize*2,y+newSize,newSize,recursions);
+        punchCantorGasket(x,y+newSize*2,newSize,recursions);
+        punchCantorGasket(x+newSize,y+newSize*2,newSize,recursions);
+        punchCantorGasket(x+newSize*2,y+newSize*2,newSize,recursions);
     }
 
     private Rectangle findLargestSquare(){
